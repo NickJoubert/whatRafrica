@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+
+
+Country_1 <-c(1,1,0,0)
+Country_2 <-c(1,0,1,0)
+Country_3 <-c(1,0,1,0)
+Country_4 <-c(0,1,0,1)
+Country_5 <-c(0,0,1,1)
+
+Countries<-c("Country_1","Country_2","Country_3","Country_4","Country_5")
+Zone_1<-c(1,1,1,0,0)
+Zone_2<-c(1,0,0,1,0)
+Zone_3<-c(0,1,1,0,1)
+Zone_4<-c(0,0,0,1,1)
+
+
+mat<- data.frame(Zone_1,Zone_2,Zone_3,Zone_4)
+ExZones<-as.matrix(mat)
+rownames(ExZones) <- paste(Countries)
+
+as_tbl_graph(graph.incidence(ExZones))
+
+```
+
+
+```{r}
+as_tbl_graph(graph.incidence(ExZones)) %>% 
+  ggraph()+
+  geom_node_point(aes(shape = type, size = 20), show.legend = F)+
+  geom_node_text(aes(label = name), colour = 'black', vjust = 4)+
+  geom_edge_link()+
+  theme_graph()
+```
+
+```{r}
+ExZones_project<- bipartite.projection(graph.incidence(ExZones)) 
+ExZones_project
+
+as_tbl_graph(ExZones_project$proj1)
+```
+
+```{r}
+as_tbl_graph(ExZones_project$proj1) %>% 
+  ggraph()+
+  geom_node_point(aes(size = 20), show.legend = F)+
+  geom_node_text(aes(label = name), colour = 'black', vjust = 4)+
+  geom_edge_link()+
+  theme_graph()
+
+
+```
+
+
+
+
+
