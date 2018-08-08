@@ -81,6 +81,7 @@ data_project<- bipartite.projection(graph.incidence(data))
 data_project
 
 as_tbl_graph(data_project$proj1)
+country_data<-as_tbl_graph(data_project$proj1)
 ```
 
 ```{r}
@@ -93,5 +94,48 @@ as_tbl_graph(data_project$proj1) %>%
 
 
 ```
+
+```{r}
+# random_graph <- sample_gnp(n = 100, 0.2)
+graph_data<-as_tbl_graph(data)
+
+# 
+# GLI_rg <- as_tbl_graph(country_data) %>%
+#   mutate(size = graph_order(),
+#          edges = graph_size(),
+#          density = edge_density(country_data),
+#          average_distance = graph_mean_dist(),
+#          trans = transitivity(country_data, type = "global")
+#   ) %>%
+#   as.data.frame()
+# 
+# GLI_rg
+
+info<-country_data%>%
+  activate(nodes)%>%
+  mutate(betweenness = centrality_betweenness(normalized = TRUE),
+         closeness = centrality_closeness(normalized = TRUE),
+         transitivity = transitivity(country_data,type = "local"))%>%
+  select(name,betweenness,closeness,transitivity)%>%
+  as.data.frame()
+info
+
+
+
+
+```
+```{r}
+library(ggplot2)
+
+
+data.frame(info)%>%
+  ggplot(aes(x=betweenness,y=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(size = 0.5)+ylab("Closeness Centrality")+xlab("betweenness")
+
+```
+
+
+
+
 
 
