@@ -8,30 +8,61 @@ data<-trade_zone_table
 ```
 
 ```{r}
-Countries<-c("Algeria",'Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde','Cameroon','Central African Republic'
-,'Chad'
-,'Comoros'
-,'Republic of the Congo'
-,'Democratic Republic of the Congo'
-,"Cote d'Ivoire"
-,'Djibouti'
-,'Egypt'
-,'Equatorial Guinea'
-,'Eritrea'
-,'Ethiopia'
-,'Gabon'
-,'Gambia'
-,'Ghana'
-,'Guinea'
-,'Guinea-Bissau'
-,'Kenya'
-,'Lesotho'
-,'Liberia'
-,'Libya'
-,'Madagascar'
-,'Malawi'
-,'Mali','Mauritania','Mauritius'
-,'Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Swaziland','Tanzania','Togo','Tunisia','Uganda','Zambia','Zimbabwe')
+Countries<-c("Algeria",
+"Angola",
+"Benin",
+"Botswana",
+"Burkina Faso",
+'Burundi',
+"Cabo Verde",
+"Cameroon",
+'Central African Republic',
+"Chad",
+"Comoros",
+"Cote d'Ivoire",
+'Democratic Republic of the Congo',
+"Djibouti",
+"Egypt",
+'Equatorial Guinea',
+"Eritrea",
+"Ethiopia",
+"Gabon",
+"Gambia",
+"Ghana",
+"Guinea",
+"Guinea-Bissau",
+"Kenya",
+"Lesotho",
+"Liberia",
+"Libya",
+"Madagascar",
+"Malawi",
+"Mali",
+"Mauritania",
+"Mauritius",
+"Morocco",
+"Mozambique",
+"Namibia",
+"Niger",
+"Nigeria",
+'Republic of the Congo',
+"Rwanda",
+'Sao Tome and Principe',
+'Senegal',
+'Seychelles',
+'Sierra Leone',
+'Somalia',
+'South Africa',
+'South Sudan',
+'Sudan',
+'Swaziland',
+'Tanzania',
+'Togo',
+'Tunisia',
+'Uganda',
+'Zambia',
+'Zimbabwe'
+)
 
 
 ```
@@ -115,8 +146,9 @@ info<-country_data%>%
   activate(nodes)%>%
   mutate(betweenness = centrality_betweenness(normalized = TRUE),
          closeness = centrality_closeness(normalized = TRUE),
-         transitivity = transitivity(country_data,type = "local"))%>%
-  select(name,betweenness,closeness,transitivity)%>%
+         transitivity = transitivity(country_data,type = "local"),
+         degree = degree(country_data))%>%
+  select(name,betweenness,closeness,transitivity,degree)%>%
   as.data.frame()
 info
 
@@ -130,11 +162,22 @@ library(ggplot2)
 
 data.frame(info)%>%
   ggplot(aes(x=betweenness,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(size = 0.5)+ylab("Closeness Centrality")+xlab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+ylab("Closeness Centrality")+xlab("betweenness")
 
 ```
 
 
+```{r}
+names(allinfo)
+data.frame(allinfo)%>%
+  ggplot(aes(x=African.rank,y=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+xlab("African.rank")+ylab("betweenness")
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=GDP.perCapita,y=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+xlab('GDP.perCapita')+ylab("closeness")
+
+```
 
 
 
