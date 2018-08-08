@@ -2,36 +2,73 @@
 title: "R Notebook"
 output: html_notebook
 ---
+```{r}
+data<-trade_zone_table
 
+```
+
+```{r}
+Countries<-c("Algeria",'Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde','Cameroon','Central African Republic'
+,'Chad'
+,'Comoros'
+,'Republic of the Congo'
+,'Democratic Republic of the Congo'
+,"Cote d'Ivoire"
+,'Djibouti'
+,'Egypt'
+,'Equatorial Guinea'
+,'Eritrea'
+,'Ethiopia'
+,'Gabon'
+,'Gambia'
+,'Ghana'
+,'Guinea'
+,'Guinea-Bissau'
+,'Kenya'
+,'Lesotho'
+,'Liberia'
+,'Libya'
+,'Madagascar'
+,'Malawi'
+,'Mali','Mauritania','Mauritius'
+,'Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Swaziland','Tanzania','Togo','Tunisia','Uganda','Zambia','Zimbabwe')
+
+
+```
+```{r}
+library(dplyr)
+data[is.na(data)]<-0
+data
+```
 
 
 ```{r}
 
 
-Country_1 <-c(1,1,0,0)
-Country_2 <-c(1,0,1,0)
-Country_3 <-c(1,0,1,0)
-Country_4 <-c(0,1,0,1)
-Country_5 <-c(0,0,1,1)
+# Country_1 <-c(1,1,0,0)
+# Country_2 <-c(1,0,1,0)
+# Country_3 <-c(1,0,1,0)
+# Country_4 <-c(0,1,0,1)
+# Country_5 <-c(0,0,1,1)
+# 
+# Countries<-c("Country_1","Country_2","Country_3","Country_4","Country_5")
+# Zone_1<-c(1,1,1,0,0)
+# Zone_2<-c(1,0,0,1,0)
+# Zone_3<-c(0,1,1,0,1)
+# Zone_4<-c(0,0,0,1,1)
 
-Countries<-c("Country_1","Country_2","Country_3","Country_4","Country_5")
-Zone_1<-c(1,1,1,0,0)
-Zone_2<-c(1,0,0,1,0)
-Zone_3<-c(0,1,1,0,1)
-Zone_4<-c(0,0,0,1,1)
 
+data<-as.matrix(data)
+rownames(data) <- paste(Countries)
 
-mat<- data.frame(Zone_1,Zone_2,Zone_3,Zone_4)
-ExZones<-as.matrix(mat)
-rownames(ExZones) <- paste(Countries)
+as_tbl_graph(graph.incidence(data))
 
-as_tbl_graph(graph.incidence(ExZones))
 
 ```
 
 
 ```{r}
-as_tbl_graph(graph.incidence(ExZones)) %>% 
+as_tbl_graph(graph.incidence(data)) %>% 
   ggraph()+
   geom_node_point(aes(shape = type, size = 20), show.legend = F)+
   geom_node_text(aes(label = name), colour = 'black', vjust = 4)+
@@ -40,14 +77,14 @@ as_tbl_graph(graph.incidence(ExZones)) %>%
 ```
 
 ```{r}
-ExZones_project<- bipartite.projection(graph.incidence(ExZones)) 
-ExZones_project
+data_project<- bipartite.projection(graph.incidence(data)) 
+data_project
 
-as_tbl_graph(ExZones_project$proj1)
+as_tbl_graph(data_project$proj1)
 ```
 
 ```{r}
-as_tbl_graph(ExZones_project$proj1) %>% 
+as_tbl_graph(data_project$proj1) %>% 
   ggraph()+
   geom_node_point(aes(size = 20), show.legend = F)+
   geom_node_text(aes(label = name), colour = 'black', vjust = 4)+
@@ -56,8 +93,5 @@ as_tbl_graph(ExZones_project$proj1) %>%
 
 
 ```
-
-
-
 
 
