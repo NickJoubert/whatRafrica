@@ -162,7 +162,7 @@ library(ggplot2)
 
 data.frame(info)%>%
   ggplot(aes(x=betweenness,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+ylab("Closeness Centrality")+xlab("betweenness")
+  geom_point()+geom_text()+scale_x_log10()+geom_smooth(method="lm",size = 0.5)+ylab("Closeness Centrality")+xlab("betweenness")
 
 ```
 
@@ -171,11 +171,19 @@ data.frame(info)%>%
 names(allinfo)
 data.frame(allinfo)%>%
   ggplot(aes(x=African.rank,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+xlab("African.rank")+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("African.rank")+ylab("betweenness")
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=African.rank,y=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("African.rank")+ylab("closeness")
 
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.perCapita,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+xlab('GDP.perCapita')+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+xlab('GDP.perCapita')+ylab("closeness")
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=GDP.perCapita,y=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+xlab('GDP.perCapita')+ylab("betweenness")
 
 ```
 
