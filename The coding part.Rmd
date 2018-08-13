@@ -181,23 +181,22 @@ allinfo$GDP.growth.rate<-as.numeric(allinfo$GDP.growth.rate)
 
 ```{r}
 
-
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.perCapita,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+xlab('GDP.perCapita')+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.perCapita,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab('GDP.perCapita')+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 data.frame(allinfo)%>%
-  ggplot(aes(x=GDP.perCapita,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+xlab('GDP.perCapita')+ylab("degree")
+  ggplot(aes(y=GDP.perCapita,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 ```
 
 
-```{r fig.width=12, fig.height=12}
+```{r}
 
 data.frame(allinfo)%>%
   ggplot(aes(x=African.rank,y=closeness, label=name))+
@@ -209,12 +208,12 @@ data.frame(allinfo)%>%
 
 data.frame(allinfo)%>%
   ggplot(aes(x=African.rank,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("African.rank")+ylab("degree")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 
 data.frame(allinfo)%>%
   ggplot(aes(x=degree,y=African.rank, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("degree")+ylab("African.rank")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 
 ```
@@ -519,3 +518,40 @@ data.frame(allinfo)%>%
 
 ```
 
+```{r fig.width=8, fig.height=8}
+allinfo<-data.frame(c(info, gdp_data, mortal))
+trade_info <-data.frame(allinfo, african_trade_items)
+
+data.frame(trade_info) %>% 
+  ggplot(aes(x=resource, y=GDP.perCapita, label=name.1, color=resource)) +
+  geom_point() +
+  geom_text() +
+  geom_smooth(method="lm", size=0.5) +
+  ylab("GDP") + xlab("Country") +
+  labs(title="Ordered Bar Chart", 
+  subtitle="Make Vs Avg. Mileage", 
+  caption="source: mpg") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6))
+
+```
+
+```{r fig.width=20, fig.height=10 }
+temp <- trade_info %>%
+  group_by(name.1) %>%
+  mutate(GDP_industry = GDP.perCapita*(GDP..industry/100),
+         GDP_agri = GDP.perCapita*(GDP.from.agriculture/100),
+         GDP_services = GDP.perCapita*(GDP.services/100)) %>%
+  select(GDP.perCapita,GDP_industry,GDP_agri,GDP_services)
+
+data.frame(trade_info) %>% 
+  ggplot(aes(x=name.1, y=GDP.perCapita, label=name.1, fill=resource)) +
+  facet_wrap(~resource) +
+  geom_col() +
+  geom_text() +
+  geom_smooth(method="lm", size=0.5) +
+  ylab("GDP") + xlab("Country") +
+  labs(title="Ordered Bar Chart", 
+  subtitle="Make Vs Avg. Mileage", 
+  caption="source: mpg") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6))
+```
