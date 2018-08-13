@@ -88,7 +88,7 @@ data
 # Zone_2<-c(1,0,0,1,0)
 # Zone_3<-c(0,1,1,0,1)
 # Zone_4<-c(0,0,0,1,1)
-
+library(tidygraph)
 
 data<-as.matrix(data)
 rownames(data) <- paste(Countries)
@@ -100,6 +100,7 @@ as_tbl_graph(graph.incidence(data))
 
 
 ```{r}
+library(ggraph)
 as_tbl_graph(graph.incidence(data)) %>% 
   ggraph()+
   geom_node_point(aes(shape = type, size = 20), show.legend = F)+
@@ -167,7 +168,14 @@ data.frame(info)%>%
 
 ```
 ```{r}
-allinfo<-c(info, )
+#define variables to all to allinfo variable, ie gdp_data and mortality stats
+
+
+
+allinfo$GDP.growth.rate<-as.numeric(allinfo$GDP.growth.rate)
+
+
+
 ```
 
 
@@ -189,8 +197,7 @@ data.frame(allinfo)%>%
 ```
 
 
-```{r}
-names(allinfo)
+```{r fig.width=12, fig.height=12}
 
 data.frame(allinfo)%>%
   ggplot(aes(x=African.rank,y=closeness, label=name))+
@@ -204,8 +211,14 @@ data.frame(allinfo)%>%
   ggplot(aes(x=African.rank,y=degree, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("African.rank")+ylab("degree")
 
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=degree,y=African.rank, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("degree")+ylab("African.rank")
+
+
 ```
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=World.rank,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("World.rank")+ylab("closeness")
@@ -218,11 +231,15 @@ data.frame(allinfo)%>%
   ggplot(aes(x=World.rank,y=degree, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("World.rank")+ylab("degree")
 
+data.frame(allinfo)%>%
+  ggplot(aes(x=degree,y=World.rank, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+ylab("World.rank")+xlab("degree")
+
 ```
 
 
 
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.from.agriculture,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.from.agriculture")+ylab("closeness")
@@ -234,10 +251,23 @@ data.frame(allinfo)%>%
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.from.agriculture,y=degree, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.from.agriculture")+ylab("degree")
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=closeness,y=GDP.from.agriculture, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=betweenness,y=GDP.from.agriculture, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=degree,y=GDP.from.agriculture, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
 
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP..industry,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP..industry")+ylab("closeness")
@@ -249,10 +279,22 @@ data.frame(allinfo)%>%
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP..industry,y=degree, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP..industry")+ylab("degree")
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=closeness,y=GDP..industry, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=betweenness,y=GDP..industry, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=degree,y=GDP..industry, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
 
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.services,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.services")+ylab("closeness")
@@ -267,7 +309,7 @@ data.frame(allinfo)%>%
 
 ```
 
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.estimates,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.estimates")+ylab("closeness")
@@ -281,7 +323,7 @@ data.frame(allinfo)%>%
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.estimates")+ylab("degree")
 
 ```
-```{r}
+```{r fig.width=12, fig.height=12}
 data.frame(allinfo)%>%
   ggplot(aes(x=GDP.growth.rate,y=closeness, label=name))+
   geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
@@ -302,96 +344,178 @@ ggplot(data.frame(allinfo),aes(x=name,y=betweenness))+geom_bar(stat="identity")+
 
 ggplot(data.frame(allinfo),aes(x=name,y=degree))+geom_bar(stat="identity")+theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
-```{r}
-more_info<-data.frame(mortality_stats,allinfo)
-more_info
+
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
+  ggplot(aes(x=closeness,y=LifeExp, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=betweenness,y=LifeExp, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=degree,y=LifeExp, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
 ```
-```{r}
-data.frame(more_info)%>%
-  ggplot(aes(x=LifeExp,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("LifeExp")+ylab("closeness")
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
+  ggplot(aes(y=Neonatel,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
-  ggplot(aes(x=LifeExp,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("LifeExp")+ylab("betweenness")
+data.frame(allinfo)%>%
+  ggplot(aes(y=Neonatel,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
-  ggplot(aes(x=LifeExp,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("LifeExp")+ylab("degree")
-
-```
-```{r}
-data.frame(more_info)%>%
-  ggplot(aes(x=Neonatel,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
-
-data.frame(more_info)%>%
-  ggplot(aes(x=Neonatel,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("betweenness")
-
-data.frame(more_info)%>%
-  ggplot(aes(x=Neonatel,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("degree")
+data.frame(allinfo)%>%
+  ggplot(aes(y=Neonatel,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
 
-```{r}
-data.frame(more_info)%>%
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
   ggplot(aes(x=Infant_Mortality,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=Infant_Mortality,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=Infant_Mortality,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("degree")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
-```{r}
-data.frame(more_info)%>%
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
   ggplot(aes(x=under_5,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=under_5,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=under_5,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("degree")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=under_5,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=under_5,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=under_5,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
 
 
-```{r}
-data.frame(more_info)%>%
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
   ggplot(aes(x=Male_adult_mortality,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=Male_adult_mortality,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=Male_adult_mortality,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("degree")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Male_adult_mortality,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Male_adult_mortality,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Male_adult_mortality,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
-```{r}
-data.frame(more_info)%>%
+```{r fig.width=12, fig.height=12}
+data.frame(allinfo)%>%
   ggplot(aes(x=female_adult_mortality,y=closeness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("closeness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=female_adult_mortality,y=betweenness, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("betweenness")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 
-data.frame(more_info)%>%
+data.frame(allinfo)%>%
   ggplot(aes(x=female_adult_mortality,y=degree, label=name))+
-  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()+xlab("GDP.growth.rate")+ylab("degree")
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=female_adult_mortality,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=female_adult_mortality,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=female_adult_mortality,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+```
+```{r fig.width=12, fig.height=12}
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=Infant_Mortality,y=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=Infant_Mortality,y=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(x=Infant_Mortality,y=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=closeness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=betweenness, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=Infant_Mortality,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
 ```
 
+```{r fig.width=12, fig.height=12}
+
+data.frame(allinfo)%>%
+  ggplot(aes(y=closeness,x=degree, label=name))+
+  geom_point()+geom_text()+geom_smooth(method="lm",size = 0.5)+scale_x_log10()+scale_y_log10()
+
+```
 
